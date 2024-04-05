@@ -1,3 +1,30 @@
+## Tìm hiểu về GenAI và framework LangChain
+
+**Expected output**: 1 model đã được fine-tuning có thể hiểu được nội dung file PDF và trả lời được câu hỏi xung quanh file pdf đó. Ở đây là nghị định 13.
+
+**Quá trình**: Sử dụng pre-train model [vinallama](https://huggingface.co/vilm/vinallama-7b-chat) và framework [Langchain](https://python.langchain.com/docs/get_started/introduction/) để fine-tuning bằng cách Embeddings file pdf để tạo ra 1 VectorDatabase dựa trên file pdf đó, prompt hỏi đáp sẽ hiểu thông qua VinaLLama 
+
+    sequenceDiagram
+        box Aqua PrepairDatabase
+        participant DataPreparing
+        participant CreateVectorDB
+        end 
+        DataPreparing->>CreateVectorDB: Embeddings, Text Splitter
+        
+        UserQuery->>+LLM(Understand Query):1 Prompt Template | Chain
+        LLM(Understand Query)->>+QueryDB: 
+        QueryDB->>+CreateVectorDB: 
+        CreateVectorDB-->>-QueryDB: 
+        QueryDB->>+LLM(To generate answer):  Related document
+        LLM(To generate answer)->>+UserResponse: 
+
+**Actual output**:
+
+* Câu hỏi đầu vào: "Nghị định 13 yêu cầu gì với dữ liệu"
+* Output:
+
+        {'query': 'Nghị định 13 yêu cầu gì với dữ liệu', 'result': '\nNghị định số 13 về bảo vệ dữ liệu cá nhân là một văn bản pháp lý do chính phủ ban hành, nhằm quy định việc bảo vệ dữ liệu cá nhân và trách nhiệm của các bên liên quan. Nó đề cập đến nhiều khía cạnh khác nhau trong quản lý và xử lý dữ liệu, đảm bảo an ninh và quyền riêng tư cho thông tin cá nhân.\n\nNghị định này áp dụng cho tất cả các tổ chức, cơ sở và cá nhân tham gia thu thập, xử lý hoặc lưu trữ dữ liệu cá nhân. Nó cũng ảnh hưởng đến hoạt động kinh doanh của các công ty vì nó đòi hỏi họ phải tuân theo các quy tắc và tiêu chuẩn cụ thể để bảo vệ thông tin được giữ gìn bí mật.\n\nNghị định 13 bao gồm một số điều khoản chính sau đây:\n\n1. Bảo đảm pháp luật quy định về dữ liệu của chủ thể có liên quan\n2. Quy định về tính minh bạch, trách nhiệm giải trình trong lĩnh vực bảo vệ dữ liệu\n3. Về cách thức xử lý dữ liệu cá nhân\n4. Quyền và nghĩa vụ của các bên liên quan như chủ thể, đối tượng trưng bày viên chức năng lực lượng tử thi hành khách thể chế độ chính sách nước sử dụng cụ thể chế độ nhạy cảm ứng'}
+
 ## Langchain
 
 **Xử lý tài liệu PDF**
